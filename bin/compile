@@ -165,6 +165,15 @@ if [ ! -f $CACHE_FILE ]; then
    echo "    * $p"
    install "$base_url/$p" "$1/$install_dir"
   done
+
+  webp_packages=(libwebp-dev_0.4.0-4_amd64.deb libwebp5_0.4.0-4_amd64.deb libwebpdemux1_0.4.0-4_amd64.deb libwebpmux1_0.4.0-4_amd64.deb webp_0.4.0-4_amd64.deb)
+ 
+  base_url="http://archive.ubuntu.com/ubuntu/pool/main/libw/libwebp"
+  echo "Installing the following packages:"
+  for p in "${webp_packages[@]}"; do
+   echo "    * $p"
+   install "$base_url/$p" "$1/$install_dir"
+  done
   
   echo "Dependencies installed at: $1/$install_dir"
 
