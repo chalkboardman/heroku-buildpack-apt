@@ -59,9 +59,6 @@ APT_OPTIONS="$APT_OPTIONS -o dir::etc::sourcelist=$APT_SOURCES"
 topic "Updating apt caches"
 apt-get $APT_OPTIONS update | indent
 
-topic "Remove imagemagick"
-apt-get -y --force-yes remove imagemagick | indent
-
 for PACKAGE in $(cat $BUILD_DIR/Aptfile | grep -v -s -e "^:repo:"); do
   if [[ $PACKAGE == *deb ]]; then
     PACKAGE_NAME=$(basename $PACKAGE .deb)
@@ -80,9 +77,16 @@ apt-get -y --force-yes -d
 mkdir -p $BUILD_DIR/.apt
 
 for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
-  topic "Installing $(basename $DEB)"
-  dpkg -x $DEB $BUILD_DIR/.apt/
+  if [[ "$(basename $DEB)" != "imagemagick_8%3a6.7.7.10-6ubuntu3.9_amd64.deb"]]; then
+    topic "Installing $(basename $DEB)"
+    dpkg -x $DEB $BUILD_DIR/.apt/
+  else
+    topic "Skip imagemagick"
+  fi
 done
+
+topic "Try to reinstall imagemagick"
+dpkg -x $(ls -1 $APT_CACHE_DIR/archives/imagemagick_8%3a6.7.7.10-6ubuntu3.9_amd64.deb) $BUILD_DIR/.apt/
 
 topic "Writing profile script"
 mkdir -p $BUILD_DIR/.profile.d
