@@ -59,6 +59,9 @@ APT_OPTIONS="$APT_OPTIONS -o dir::etc::sourcelist=$APT_SOURCES"
 topic "Updating apt caches"
 apt-get $APT_OPTIONS update | indent
 
+topic "Purge imagemagick"
+apt-get purge imagemagick | indent
+
 for PACKAGE in $(cat $BUILD_DIR/Aptfile | grep -v -s -e "^:repo:"); do
   if [[ $PACKAGE == *deb ]]; then
     PACKAGE_NAME=$(basename $PACKAGE .deb)
