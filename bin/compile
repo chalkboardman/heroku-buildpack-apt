@@ -120,7 +120,7 @@ VENDOR_DIR="$BUILD_DIR/vendor"
 mkdir -p $VENDOR_DIR
 INSTALL_DIR="$VENDOR_DIR/imagemagick"
 mkdir -p $INSTALL_DIR
-IMAGE_MAGICK_VERSION="${IMAGE_MAGICK_VERSION:-6.9.5-10}"
+IMAGE_MAGICK_VERSION="${IMAGE_MAGICK_VERSION:-6.7.7-10}"
 CACHE_FILE="$CACHE_DIR/imagemagick-$IMAGE_MAGICK_VERSION.tar.gz"
 
 echo "First Argument: $1"
@@ -181,7 +181,7 @@ if [ ! -f $CACHE_FILE ]; then
   cd $IMAGE_MAGICK_DIR
   export CPPFLAGS="-I$INSTALL_DIR/include"
   export LDFLAGS="-L$INSTALL_DIR/lib"
-  ./configure --prefix=$INSTALL_DIR --with-webp
+  ./configure --prefix=$INSTALL_DIR --with-webp --enable-shared
   make && make install
   cd ..
   rm -rf $IMAGE_MAGICK_DIR
